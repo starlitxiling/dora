@@ -57,14 +57,22 @@ mod ffi {
         type MergedEvents;
         type MergedDoraEvent;
 
+        // Register node with Dora at startup
         fn init_dora_node() -> Result<DoraNode>;
 
+        // Combined event streams merging of multiple event streams into one
         fn dora_events_into_combined(events: Box<Events>) -> CombinedEvents;
+        // Create an empty event stream
         fn empty_combined_events() -> CombinedEvents;
+        // Wait for the next incoming event
         fn next(self: &mut Events) -> Box<DoraEvent>;
+
         fn next_event(events: &mut Box<Events>) -> Box<DoraEvent>;
+        // Return the kind of event
         fn event_type(event: &Box<DoraEvent>) -> DoraEventType;
+        // Return DoraInput instance
         fn event_as_input(event: Box<DoraEvent>) -> Result<DoraInput>;
+        // Node use this send output, Note that all outputs need to be listed in the dataflow YAML declaration file
         fn send_output(
             output_sender: &mut Box<OutputSender>,
             id: String,
@@ -73,7 +81,9 @@ mod ffi {
 
         fn next(self: &mut CombinedEvents) -> CombinedEvent;
 
+        // Check if a Dora Event can be Downcast
         fn is_dora(self: &CombinedEvent) -> bool;
+        // Downcast the combined event to a Dora event
         fn downcast_dora(event: CombinedEvent) -> Result<Box<DoraEvent>>;
     }
 }
